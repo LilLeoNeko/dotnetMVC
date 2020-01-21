@@ -5,6 +5,7 @@ using System.Linq;
 using System.Web;
 using System.Web.Mvc;
 using dotNetFrameworkMVC_MoshProject.Models;
+using dotNetFrameworkMVC_MoshProject.ViewModels;
 
 namespace dotNetFrameworkMVC_MoshProject.Controllers
 {
@@ -16,10 +17,19 @@ namespace dotNetFrameworkMVC_MoshProject.Controllers
         {
             _context = new ApplicationDbContext();
         }
-
         protected override void Dispose(bool disposing)
         {
             _context.Dispose();
+        }
+
+        public ActionResult NewCustomer()
+        {
+            var memberships = _context.Memberships.ToList();
+            var viewModel = new NewCustomerViewModel
+            {
+                Memberships = memberships
+            };
+            return View(viewModel);
         }
         // GET: Customers
         public ActionResult Index()
@@ -35,6 +45,29 @@ namespace dotNetFrameworkMVC_MoshProject.Controllers
             if (customer == null)
                 return HttpNotFound();
             return View(customer);
+        }
+        [HttpPost]
+        public ActionResult Create(Customer customer)
+        {
+            _context.Customers.Add(customer);
+            _context.SaveChanges();
+            return RedirectToAction("Index","Customers");
+        }
+
+        public ActionResult Edit(int id)
+        {
+            var customer = _context.Customers.SingleOrDefault(c=>c.Id == id);
+            if (customer == null)
+            {
+                return HttpNotFound();
+            }
+
+            var viewModel = new NewCustomerViewModel
+            {
+                Customer = customer,
+                Memberships = _context.Memberships.ToList()
+            };
+            return View();
         }
     }
 }

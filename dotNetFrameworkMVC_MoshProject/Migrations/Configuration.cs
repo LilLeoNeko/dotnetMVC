@@ -20,10 +20,6 @@ namespace dotNetFrameworkMVC_MoshProject.Migrations
 
             //  You can use the DbSet<T>.AddOrUpdate() helper extension method 
             //  to avoid creating duplicate seed data.
-            context.Customers.AddOrUpdate(x=>x.Id,
-                new Customer(){Name = "John Smith", IsSubscribed = false, MembershipId = 1},
-                new Customer() { Name = "Mary Williams", IsSubscribed = true, MembershipId = 2}
-                );
         }
     }
 }

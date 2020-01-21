@@ -5,5 +5,11 @@
 }
 
 <h2>@Model.Name</h2>
-<p>@Model.Membership.Discount</p>
+<ul>
+    <li>Membership Type: @Model.Membership.Name</li>
+    @if (Model.BirthDate != null)
+    {
+        <li>Birth Date: @Model.BirthDate.Value.ToShortDateString()</li>
+    }
+</ul>
 

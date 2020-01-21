@@ -23,7 +23,7 @@ namespace dotNetFrameworkMVC_MoshProject
                       "~/Scripts/bootstrap.js"));
 
             bundles.Add(new StyleBundle("~/Content/css").Include(
-                      "~/Content/bootstrap.css",
+                      "~/Content/bootstrap_simplex.css",
                       "~/Content/site.css"));
         }
     }

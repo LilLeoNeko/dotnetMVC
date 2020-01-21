@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Data.Entity;
 using System.Linq;
 using System.Web;
 using System.Web.Mvc;
@@ -10,32 +11,28 @@ namespace dotNetFrameworkMVC_MoshProject.Controllers
 {
     public class MoviesController : Controller
     {
-        // GET: Movies
-        public ActionResult Index(int? pageIndex, string sortBy)
+        private ApplicationDbContext _context;
+        public MoviesController()
         {
-            var movies = new List<Movie>
-            {
-                new Movie{Name = "Hello World!", Rate = 5.0},
-                new Movie{Name = "GoodBye!", Rate = 1.5}
-            };
+            _context = new ApplicationDbContext();
+        }
+        // GET: Movies
+        public ActionResult Index()
+        {
+            var movies = _context.Movies.Include(m=>m.Genre);
             return View(movies);
+        }
+        //GET: Movies/Detail/id
+        [Route("movies/detail/{id}")]
+        public ActionResult Detail(int id)
+        {
+            var movie = _context.Movies.Include(m=>m.Genre).SingleOrDefault(m => m.Id == id);
+            return View(movie);
         }
         //GET: Movies/Random
         public ActionResult Random()
         {
-            var movie = new Movie{Name = "Hello World!", Rate = 5.0};
-            var customers = new List<Customer>
-            {
-                new Customer{Name = "David"},
-                new Customer{Name = "Leonardo"},
-                new Customer{Name = "Fiona"}
-            };
-            var viewModel = new MovieCustomerViewModel
-            {
-                Movie = movie,
-                Customers = customers
-            };
-            return View(viewModel);
+            return View();
         }
 
         public ActionResult Edit(int id)
